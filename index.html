@@ -3,109 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>QuickVideo - Video Downloader</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+}
 
 body{
-font-family:Arial,sans-serif;
-background:#f4f6f8;
-color:#222;
-min-height:100vh;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#111827;
 }
 
 header{
-background:#111827;
-color:white;
-text-align:center;
-padding:25px 15px;
+  background:#111827;
+  color:white;
+  padding:24px 16px;
+  text-align:center;
 }
 
 header h1{
-font-size:28px;
-margin-bottom:8px;
+  margin:0;
+  font-size:28px;
 }
 
 header p{
-font-size:14px;
-color:#d1d5db;
+  margin:8px 0 0;
+  color:#d1d5db;
 }
 
 .container{
-width:92%;
-max-width:600px;
-margin:40px auto;
+  max-width:520px;
+  margin:35px auto;
+  padding:0 16px;
 }
 
 .card{
-background:white;
-padding:28px 20px;
-border-radius:18px;
-box-shadow:0 5px 25px rgba(0,0,0,.08);
-text-align:center;
+  background:white;
+  padding:24px;
+  border-radius:16px;
+  box-shadow:0 5px 25px rgba(0,0,0,.08);
 }
 
-.card h2{
-font-size:24px;
-margin-bottom:10px;
-}
-
-.card p{
-font-size:14px;
-color:#666;
-margin-bottom:20px;
+h2{
+  margin-top:0;
 }
 
 input{
-width:100%;
-padding:15px;
-border:1px solid #ddd;
-border-radius:10px;
-font-size:15px;
-margin-bottom:12px;
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:16px;
+  margin:10px 0;
 }
 
 button{
-width:100%;
-padding:15px;
-border:0;
-border-radius:10px;
-background:#111827;
-color:white;
-font-size:16px;
-font-weight:bold;
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-#message{
-display:none;
-margin-top:15px;
-padding:12px;
-background:#f1f5f9;
-border-radius:8px;
-font-size:14px;
+button:disabled{
+  opacity:.6;
 }
 
-.info{
-margin-top:25px;
-text-align:left;
+#status{
+  margin-top:15px;
+  text-align:center;
+  font-size:14px;
 }
 
-.info h3{
-margin-bottom:10px;
+#downloadBox{
+  margin-top:15px;
+  text-align:center;
 }
 
-.info li{
-margin:8px 0;
-font-size:14px;
-color:#555;
+.downloadBtn{
+  display:block;
+  text-decoration:none;
+  background:#16a34a;
+  color:white;
+  padding:14px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.error{
+  color:#dc2626;
 }
 
 footer{
-text-align:center;
-margin-top:30px;
-font-size:13px;
-color:#777;
+  text-align:center;
+  color:#6b7280;
+  margin:30px 0;
+  font-size:13px;
 }
 </style>
 </head>
@@ -113,61 +114,210 @@ color:#777;
 <body>
 
 <header>
-<h1>QuickVideo</h1>
-<p>Simple Video Downloader</p>
+  <h1>QuickVideo</h1>
+  <p>Simple Video Downloader</p>
 </header>
 
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
-<h2>Download Video</h2>
+    <h2>Download Video</h2>
 
-<p>Paste a public video link below</p>
+    <p>Paste a public video link below.</p>
 
-<input id="videoUrl" type="url" placeholder="Paste video link here">
+    <input
+      id="url"
+      type="url"
+      placeholder="Paste video link here"
+    >
 
-<button onclick="downloadVideo()">Download Video</button>
+    <button id="downloadBtn" onclick="downloadVideo()">
+      Download Video
+    </button>
 
-<div id="message"></div>
+    <div id="status"></div>
 
-<div class="info">
-<h3>How to use</h3>
-<ul>
-<li>Copy a public video link.</li>
-<li>Paste it in the box.</li>
-<li>Tap Download Video.</li>
-</ul>
-</div>
+    <div id="downloadBox"></div>
+
+  </div>
+
+  <div class="card" style="margin-top:20px">
+
+    <h3>How to use</h3>
+
+    <ol>
+      <li>Copy a public video link.</li>
+      <li>Paste it above.</li>
+      <li>Tap Download Video.</li>
+      <li>Tap the download button.</li>
+    </ol>
+
+  </div>
 
 </div>
 
 <footer>
-© 2026 QuickVideo
+  © 2026 QuickVideo
 </footer>
 
-</div>
-
 <script>
-function downloadVideo(){
 
-let url=document.getElementById("videoUrl").value.trim();
-let message=document.getElementById("message");
+const API_URL = "https://quickvideo-cobalt.onrender.com";
 
-message.style.display="block";
+async function downloadVideo(){
 
-if(url===""){
-message.innerText="Please paste a video link first.";
-return;
+  const input = document.getElementById("url");
+  const button = document.getElementById("downloadBtn");
+  const status = document.getElementById("status");
+  const box = document.getElementById("downloadBox");
+
+  const url = input.value.trim();
+
+  box.innerHTML = "";
+  status.className = "";
+
+  if(!url){
+
+    status.innerText = "Please paste a video link.";
+
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = "Processing...";
+  status.innerText = "Getting your video...";
+
+  try{
+
+    const response = await fetch(API_URL + "/", {
+
+      method:"POST",
+
+      headers:{
+        "Accept":"application/json",
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+        url:url,
+
+        videoQuality:"720",
+
+        downloadMode:"auto",
+
+        filenameStyle:"basic",
+
+        youtubeVideoCodec:"h264"
+
+      })
+
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if(!response.ok){
+
+      throw new Error(
+        data?.error?.code ||
+        "Server request failed"
+      );
+
+    }
+
+    if(data.status === "error"){
+
+      throw new Error(
+        data?.error?.code ||
+        "Unable to process this link"
+      );
+
+    }
+
+    if(data.status === "redirect" || data.status === "tunnel"){
+
+      if(!data.url){
+
+        throw new Error("Download URL not received.");
+
+      }
+
+      box.innerHTML = `
+        <a
+          class="downloadBtn"
+          href="${data.url}"
+          target="_blank"
+          rel="noopener"
+        >
+          Download Video
+        </a>
+      `;
+
+      status.innerText = "Video is ready!";
+
+      return;
+    }
+
+    if(data.status === "picker"){
+
+      status.innerText =
+        "This link contains multiple media items.";
+
+      if(data.picker && data.picker.length){
+
+        data.picker.forEach((item,index)=>{
+
+          if(item.url){
+
+            const a = document.createElement("a");
+
+            a.href = item.url;
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.className = "downloadBtn";
+            a.style.marginTop = "10px";
+            a.innerText =
+              "Download " + (index + 1);
+
+            box.appendChild(a);
+
+          }
+
+        });
+
+      }
+
+      return;
+    }
+
+    throw new Error("No downloadable video returned.");
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    status.className = "error";
+
+    status.innerText =
+      "Error: " + error.message;
+
+  }
+
+  finally{
+
+    button.disabled = false;
+
+    button.innerText = "Download Video";
+
+  }
+
 }
 
-if(!url.startsWith("http")){
-message.innerText="Please enter a valid URL.";
-return;
-}
-
-message.innerText="Link received. Downloader system will be connected next.";
-}
 </script>
 
 </body>

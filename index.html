@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>QuickVideo - Video Downloader</title>
+<title>QuickVideo - Free Online Video Downloader</title>
+
+<meta name="description" content="QuickVideo is a simple online video downloader for publicly accessible video links.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://aunechagautam-videodownlodetols.github.io/-video-downloader/">
 
 <style>
 *{
@@ -16,18 +20,19 @@ body{
   font-family:Arial,sans-serif;
   background:#f5f7fb;
   color:#111827;
+  line-height:1.6;
 }
 
 header{
   background:#111827;
   color:white;
-  padding:24px 16px;
+  padding:28px 16px;
   text-align:center;
 }
 
 header h1{
   margin:0;
-  font-size:28px;
+  font-size:30px;
 }
 
 header p{
@@ -36,9 +41,23 @@ header p{
 }
 
 .container{
-  max-width:520px;
-  margin:35px auto;
+  max-width:560px;
+  margin:30px auto;
   padding:0 16px;
+}
+
+/* Ad space */
+.ad-space{
+  min-height:90px;
+  background:#fff;
+  border:1px dashed #d1d5db;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#9ca3af;
+  font-size:13px;
+  margin-bottom:20px;
 }
 
 .card{
@@ -102,11 +121,24 @@ button:disabled{
   color:#dc2626;
 }
 
+.info{
+  margin-top:20px;
+}
+
+.info h3{
+  margin-bottom:8px;
+}
+
 footer{
   text-align:center;
   color:#6b7280;
-  margin:30px 0;
+  margin:35px 16px;
   font-size:13px;
+}
+
+footer a{
+  color:#2563eb;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -115,16 +147,22 @@ footer{
 
 <header>
   <h1>QuickVideo</h1>
-  <p>Simple Video Downloader</p>
+  <p>Free Online Video Downloader</p>
 </header>
 
 <div class="container">
+
+  <div class="ad-space">
+    Advertisement
+  </div>
 
   <div class="card">
 
     <h2>Download Video</h2>
 
-    <p>Paste a public video link below.</p>
+    <p>
+      Paste a publicly accessible video link below.
+    </p>
 
     <input
       id="url"
@@ -142,23 +180,37 @@ footer{
 
   </div>
 
-  <div class="card" style="margin-top:20px">
+  <div class="ad-space" style="margin-top:20px;">
+    Advertisement
+  </div>
 
-    <h3>How to use</h3>
+  <div class="card info">
+
+    <h3>How to use QuickVideo</h3>
 
     <ol>
-      <li>Copy a public video link.</li>
-      <li>Paste it above.</li>
+      <li>Copy a publicly accessible video link.</li>
+      <li>Paste the link above.</li>
       <li>Tap Download Video.</li>
-      <li>Tap the download button.</li>
+      <li>When available, tap the download button.</li>
     </ol>
+
+    <h3>Important</h3>
+
+    <p>
+      QuickVideo is intended for lawful use and publicly accessible content.
+      You are responsible for respecting copyright and the terms of the
+      platform hosting the content.
+    </p>
 
   </div>
 
 </div>
 
-  <footer>
+<footer>
+
   © 2026 QuickVideo
+
   <br><br>
 
   <a href="about.html">About Us</a>
@@ -168,14 +220,8 @@ footer{
   <a href="terms.html">Terms of Service</a>
   |
   <a href="contact.html">Contact Us</a>
-  </footer>
 
-  <a href="privacy.html">Privacy Policy</a>
-  |
-  <a href="terms.html">Terms of Service</a>
-  |
-  <a href="contact.html">Contact Us</a>
-  </footer>
+</footer>
 
 <script>
 
@@ -218,13 +264,9 @@ async function downloadVideo(){
       body:JSON.stringify({
 
         url:url,
-
         videoQuality:"720",
-
         downloadMode:"auto",
-
         filenameStyle:"basic",
-
         youtubeVideoCodec:"h264"
 
       })
@@ -327,7 +369,6 @@ async function downloadVideo(){
   finally{
 
     button.disabled = false;
-
     button.innerText = "Download Video";
 
   }
